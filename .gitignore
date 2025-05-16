@@ -1,7 +1,14 @@
-### IntelliJ IDEA ###
+# Java build output
 out/
+bin/
 !**/src/main/**/out/
 !**/src/test/**/out/
+!**/src/main/**/bin/
+!**/src/test/**/bin/
+
+### IntelliJ IDEA ###
+.idea/
+*.iml
 
 ### Eclipse ###
 .apt_generated
@@ -26,5 +33,7 @@ bin/
 .vscode/
 
 ### Mac OS ###
-.DS_Store.idea/
-*.iml
+.DS_Store
+
+# Linter
+checkstyle.jar
