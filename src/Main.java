@@ -1,5 +1,6 @@
 public class Main {
     public static void main(final String[] args) {
-        System.out.println("Hello, World!");
+        MenuHandler menu = new MenuHandler();
+        menu.start();
     }
 }
