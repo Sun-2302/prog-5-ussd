@@ -1,4 +1,6 @@
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 public class MenuHandler {
@@ -22,6 +24,84 @@ public class MenuHandler {
             "*. Page précédente"
     );
 
+    private final Map<String, SubMenu> subMenus = new HashMap<>();
+
+    public MenuHandler() {
+        subMenus.put("1", new SubMenu("ACHETER CREDIT OU OFFRE YAS",
+                List.of(
+                        "1. Crédit pour mon numéro",
+                        "2. Crédit pour autre numéro",
+                        "3. Offre pour mon numéro",
+                        "4. Offre pour autre numéro"
+                ),
+                List.of("1", "2", "3", "4")
+        ));
+
+        subMenus.put("2", new SubMenu("TRANSFERER ARGENT",
+                List.of(
+                        "0. Sans numéro",
+                        "5. MVola Épargne",
+                        "6. Rembourser une avance",
+                        "9. Répertoire MVola"
+                ),
+                List.of("0", "5", "6", "9")
+        ));
+
+        subMenus.put("3", new SubMenu("MVOLA CREDIT OU EPARGNE",
+                List.of(
+                        "1. MVola Épargne",
+                        "2. MVola Crédit"
+                ),
+                List.of("1", "2")
+        ));
+
+        subMenus.put("4", new SubMenu("RETRAIT ARGENT",
+                List.of(
+                        "1. Auprès d'un Agent Mvola",
+                        "2. Auprès d'un DAB SGM"
+                ),
+                List.of("1", "2")
+        ));
+
+        subMenus.put("5", new SubMenu("PAIEMENT FACTURES & PARTENAIRES",
+                List.of(
+                        "1. Accepter une demande d'argent",
+                        "2. YAS ou MOOV",
+                        "3. Electricite et eau",
+                        "4. Assurances"
+                ),
+                List.of("1", "2", "3", "4")
+        ));
+
+        subMenus.put("6", new SubMenu("MON COMPTE",
+                List.of(
+                        "1. Consultation du solde",
+                        "2. Consulter mes 3 dernieres transactions",
+                        "3. Reçu par e-mail",
+                        "4. Mon adresse e-mail",
+                        "5. Mon repertoire MVola"
+                ),
+                List.of("1", "2", "3", "4", "5")
+        ));
+
+        subMenus.put("7", new SubMenu("RECEVOIR DE L'ARGENT",
+                List.of(
+                        "1. MVola Épargne",
+                        "2. MVola Avance",
+                        "3. Western Union"
+                ),
+                List.of("1", "2", "3")
+        ));
+
+        subMenus.put("8", new SubMenu("BANQUES ET MICRO-FINANCES",
+                List.of(
+                        "1. Ma Banque",
+                        "2. Mon Institution de Micro-Finances"
+                ),
+                List.of("1", "2")
+        ));
+    }
+
     public void start() {
         while (running) {
             printMenu(currentPage);
@@ -33,7 +113,7 @@ public class MenuHandler {
         scanner.close();
     }
 
-    private void printMenu(int page) {
+    private void printMenu(final int page) {
         System.out.println("------ MVOLA ------");
         List<String> menu = (page == 1) ? menuPage1 : menuPage2;
         for (String item : menu) {
@@ -42,12 +122,14 @@ public class MenuHandler {
         System.out.println("0. Quitter");
     }
 
-    private void handleInput(String input) {
+    private void handleInput(final String input) {
+        if (subMenus.containsKey(input)) {
+            subMenus.get(input).display(this);
+            running = false;
+            return;
+        }
+
         switch (input) {
-            case "1", "2", "3", "4", "5", "6", "7", "8":
-                MenuActionRouter.handleOption(input);
-                running = false;
-                break;
             case "#":
                 currentPage = 2;
                 break;
@@ -61,5 +143,10 @@ public class MenuHandler {
             default:
                 System.out.println("Option invalide. Réessayez.");
         }
+    }
+
+    public void restart() {
+        this.running = true;
+        this.start();
     }
 }
